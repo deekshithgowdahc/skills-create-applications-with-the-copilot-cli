@@ -1,10 +1,8 @@
 #!/usr/bin/env node
-// src/calculator.js - Node.js CLI calculator
-// Supported operations:
-// - addition (add)
-// - subtraction (sub)
-// - multiplication (mul)
-// - division (div)
+// src/calculator.js - Node.js CLI wrapper around calculator functions
+// Supported operations: add, sub, mul, div
+
+const { add, sub, mul, div } = require('./lib/calculator');
 
 const [,, op, aStr, bStr] = process.argv;
 
@@ -24,21 +22,22 @@ if (Number.isNaN(a) || Number.isNaN(b)) {
 
 let result;
 switch (op) {
-  case 'add': // addition
-    result = a + b;
+  case 'add':
+    result = add(a, b);
     break;
-  case 'sub': // subtraction
-    result = a - b;
+  case 'sub':
+    result = sub(a, b);
     break;
-  case 'mul': // multiplication
-    result = a * b;
+  case 'mul':
+    result = mul(a, b);
     break;
-  case 'div': // division
-    if (b === 0) {
-      console.error('Error: division by zero');
+  case 'div':
+    try {
+      result = div(a, b);
+    } catch (e) {
+      console.error('Error:', e.message);
       process.exit(2);
     }
-    result = a / b;
     break;
   default:
     console.error('Error: unsupported operation. Use add, sub, mul, or div');
